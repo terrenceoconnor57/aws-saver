@@ -16,6 +16,9 @@ typecheck:
 test:
 	pytest tests/ -v
 
+test_ec2:
+	pytest -k ec2_unattached -q
+
 clean:
 	rm -rf build/
 	rm -rf dist/
