@@ -1,7 +1,7 @@
 """Lambda handler for scanning unattached EBS volumes."""
 
 import time
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from saverbot.assume import assume
@@ -96,7 +96,7 @@ def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
             "service": "ec2",
             "rule": "ebs-unattached",
             "regions": regions,
-            "scanned_at": datetime.now(UTC).isoformat(),
+            "scanned_at": datetime.now(timezone.utc).isoformat(),
             "duration_ms": duration_ms,
         },
         "items": all_items,

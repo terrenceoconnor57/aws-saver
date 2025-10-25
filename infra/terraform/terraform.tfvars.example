@@ -1,0 +1,6 @@
+# Example terraform.tfvars file
+# Copy this file to terraform.tfvars and customize as needed
+
+region        = "us-east-1"
+function_name = "aws-saver-scan-ec2-unattached-ebs"
+

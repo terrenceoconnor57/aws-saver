@@ -2,7 +2,7 @@
 name = "saverbot"
 version = "0.1.0"
 description = "AWS cost-saving automation"
-requires-python = ">=3.11"
+requires-python = ">=3.10,<3.11"
 dependencies = [
     "boto3>=1.34.0",
     "pydantic>=2.5.0",
@@ -29,7 +29,7 @@ where = ["src"]
 
 [tool.mypy]
 strict = true
-python_version = "3.11"
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -47,7 +47,7 @@ ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [
