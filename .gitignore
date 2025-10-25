@@ -42,6 +42,9 @@ htmlcov/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+.pytype/
+.pyre/
+.ruff_cache/
 
 # IDEs
 .vscode/
@@ -49,15 +52,39 @@ dmypy.json
 *.swp
 *.swo
 *~
+*.code-workspace
 
 # Environment
 .env
 .env.local
+.envrc
 
 # OS
 .DS_Store
 Thumbs.db
+*.bak
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# AWS/Lambda
+*.zip
+!requirements*.txt
 
 # Project specific
 *.log
+*.tmp
+*.temp
+.scratch/
 
