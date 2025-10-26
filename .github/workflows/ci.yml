@@ -65,6 +65,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Download Lambda artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: lambda-deployment-package
+        path: dist/
+    
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
