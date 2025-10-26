@@ -15,17 +15,35 @@ resource "aws_iam_role" "lambda_exec" {
     ]
   })
 
-  tags = {
-    Name        = "${var.function_name}-exec-role"
-    ManagedBy   = "terraform"
-    Application = "aws-saver"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name        = "${var.function_name}-exec-role"
+      ManagedBy   = "terraform"
+      Application = "aws-saver"
+    }
+  )
 }
 
 # Attach CloudWatch Logs policy
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+# CloudWatch Log Group
+resource "aws_cloudwatch_log_group" "lambda_logs" {
+  name              = "/aws/lambda/${var.function_name}"
+  retention_in_days = 14
+
+  tags = merge(
+    var.tags,
+    {
+      Name        = "/aws/lambda/${var.function_name}"
+      ManagedBy   = "terraform"
+      Application = "aws-saver"
+    }
+  )
 }
 
 # Lambda function
@@ -41,10 +59,13 @@ resource "aws_lambda_function" "scan_ec2_unattached_ebs" {
   timeout     = 60
   memory_size = 256
 
-  tags = {
-    Name        = var.function_name
-    ManagedBy   = "terraform"
-    Application = "aws-saver"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name        = var.function_name
+      ManagedBy   = "terraform"
+      Application = "aws-saver"
+    }
+  )
 }
 

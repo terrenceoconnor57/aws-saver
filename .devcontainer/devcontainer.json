@@ -23,14 +23,16 @@
             "source.fixAll": "explicit",
             "source.organizeImports": "explicit"
           }
-        }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   },
   "postCreateCommand": "make install",
   "remoteUser": "root",
   "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${env:HOME}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached"
   ]
 }
 

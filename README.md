@@ -149,7 +149,79 @@ The Terraform configuration is in `infra/terraform/`:
 - `outputs.tf` - Output values (lambda_name, lambda_arn)
 - `terraform.tfvars.example` - Example variable values
 
-**Real deployment** (terraform apply) requires:
-- AWS credentials configured
-- Appropriate IAM permissions
-- Will be covered in a later stage
+**Real deployment** (terraform apply) is now supported! See the "Deploy & Invoke" section below.
+
+## Deploy & Invoke
+
+This section covers deploying the Lambda function to AWS and invoking it remotely for integration testing.
+
+### Prerequisites
+
+- **Terraform Cloud account** with organization "aws-saver" and workspace "aws-saver-dev" created
+- See [TERRAFORM_CLOUD_SETUP.md](TERRAFORM_CLOUD_SETUP.md) for authentication
+- AWS credentials configured in Terraform Cloud workspace (not on host machine)
+- **(Optional)** GitHub Actions configured for automatic deployments - See [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md)
+- Python runtime: 3.10
+- AWS provider: 4.67
+
+### Step 1: Build the Lambda ZIP
+
+Build the deployment artifact:
+
+```bash
+make clean_dist && make build_lambda_scan_ebs
+```
+
+This creates `dist/scan_ec2_unattached_ebs.zip`.
+
+### Step 2: Authenticate with Terraform Cloud
+
+One-time setup:
+
+```bash
+terraform login
+```
+
+Follow the prompts to generate and paste your token. See [TERRAFORM_CLOUD_SETUP.md](TERRAFORM_CLOUD_SETUP.md) for details.
+
+### Step 3: Deploy with Terraform
+
+Initialize and apply:
+
+```bash
+make tf_init
+make tf_apply
+```
+
+This will create:
+- Lambda function with Python 3.10 runtime
+- IAM execution role with CloudWatch Logs permissions
+- CloudWatch Log Group with 14-day retention
+
+### Step 4: Invoke the Deployed Lambda
+
+Test the deployed function using the remote invoke script:
+
+```bash
+python scripts/remote_invoke.py \
+  --function-name aws-saver-scan-ebs \
+  --region us-east-1 \
+  --event-file scripts/sample_event.json
+```
+
+**Note:** The sample event references a placeholder cross-account role. If you haven't set up a real IAM role, the Lambda will return a clean error response like `{"error": {"code": "AccessDenied", "message": "..."}}`. This is expected and confirms the Lambda is working correctly. You can check CloudWatch Logs to verify execution.
+
+### Step 5: Clean Up
+
+When done testing, destroy the infrastructure:
+
+```bash
+make tf_destroy
+```
+
+### Outputs
+
+After `terraform apply`, you'll see:
+- `lambda_name` - Name of the deployed Lambda function
+- `lambda_arn` - ARN of the Lambda function
+- `log_group_name` - CloudWatch Log Group name for logs

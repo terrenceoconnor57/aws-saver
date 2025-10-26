@@ -10,3 +10,9 @@ variable "function_name" {
   default     = "aws-saver-scan-ec2-unattached-ebs"
 }
 
+variable "tags" {
+  description = "Additional tags to apply to all resources"
+  type        = map(string)
+  default     = {}
+}
+

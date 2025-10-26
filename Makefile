@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test clean fix-colima clean_dist build_lambda_scan_ebs
+.PHONY: install fmt lint typecheck test clean fix-colima clean_dist build_lambda_scan_ebs tf_init tf_plan tf_apply tf_destroy
 
 install:
 	pip install -e ".[dev]"
@@ -42,4 +42,16 @@ build_lambda_scan_ebs: clean_dist
 
 fix-colima:
 	./fix-colima.sh
+
+tf_init:
+	cd infra/terraform && terraform init -input=false
+
+tf_plan:
+	cd infra/terraform && terraform plan -var-file=terraform.tfvars -input=false
+
+tf_apply:
+	cd infra/terraform && terraform apply -auto-approve -var-file=terraform.tfvars
+
+tf_destroy:
+	cd infra/terraform && terraform destroy -auto-approve -var-file=terraform.tfvars
 
