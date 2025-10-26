@@ -57,6 +57,19 @@ jobs:
         name: lambda-deployment-package
         path: dist/scan_ec2_unattached_ebs.zip
         retention-days: 30
+    
+    - name: Commit Lambda artifact to repo
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add dist/scan_ec2_unattached_ebs.zip
+        if git diff --staged --quiet; then
+          echo "No changes to Lambda artifact"
+        else
+          git commit -m "chore: update Lambda deployment artifact [skip ci]"
+          git push
+        fi
   
   terraform-plan:
     runs-on: ubuntu-latest

@@ -80,6 +80,7 @@ override.tf.json
 
 # AWS/Lambda
 *.zip
+!dist/scan_ec2_unattached_ebs.zip
 !requirements*.txt
 
 # Project specific
