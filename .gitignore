@@ -78,9 +78,10 @@ override.tf.json
 *_override.tf.json
 
 # AWS/Lambda
-# Ignore everything in dist/ except our Lambda deployment package
-dist/*
-!dist/scan_ec2_unattached_ebs.zip
+# Ignore dist/ entirely (for local builds)
+dist/
+# Allow Lambda artifact in terraform directory
+!infra/terraform/scan_ec2_unattached_ebs.zip
 !requirements*.txt
 
 # Project specific
