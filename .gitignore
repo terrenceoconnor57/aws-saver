@@ -6,7 +6,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -79,7 +78,8 @@ override.tf.json
 *_override.tf.json
 
 # AWS/Lambda
-*.zip
+# Ignore everything in dist/ except our Lambda deployment package
+dist/*
 !dist/scan_ec2_unattached_ebs.zip
 !requirements*.txt
 
